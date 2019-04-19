@@ -75,8 +75,9 @@ urlinfo_t *parse_url(char *url)
     }
 
     urlinfo->hostname = hostname;
-    urlinfo->path = path;
     urlinfo->port = port;
+    urlinfo->path = path;
+    // printf("%s%s%s\n", urlinfo->hostname, urlinfo->port, urlinfo->path);
 
     return urlinfo;
 }
@@ -97,11 +98,17 @@ int send_request(int fd, char *hostname, char *port, char *path)
     char request[max_request_size];
     int rv;
 
-    ///////////////////
-    // IMPLEMENT ME! //
-    ///////////////////
+    int request_length = sprintf(request,
+        "GET /%s HTTP/1.1\n"
+        "Host: %s:%s\n"
+        "Connection: close\n\n",
+        path,
+        hostname,
+        port);
 
-    return 0;
+    rv = send(fd, request, request_length, 0);
+
+    return rv;
 }
 
 int main(int argc, char *argv[])
